@@ -6,9 +6,11 @@ let heldMoldIndex = -1;
 let heldTime = 0;
 let lastMouseX = 0;
 let lastMouseY = 0;
+let spread_chance = 8;
 
 function setup() {
   createCanvas(800, 600);
+  growMold();
 }
 
 function draw() {
@@ -24,14 +26,25 @@ function draw() {
     fill(100, 200, 100);
       noStroke();
     for (let m of moldSpots) {
+        fill(m.c,200,100);
         circle(m.x, m.y, m.r * 2);
     }
     if (frameCount % 120 == 0) { //mold spreads every two seconds 
-      spreadMold();
+      for (let mold of moldSpots){
+        let i = floor(random(0,spread_chance));
+        if(i == 0){
+          console.log("SPREAD")
+          spreadMold(mold);
+        }
+      }
+    }
+    if (frameCount % 300 == 0){
+      growMold();
     }
     cleaning();
     drawTimer();
-    drawScore()
+    drawScore();
+    //console.log(moldSpots);
 
   } else {
     //done
@@ -50,14 +63,27 @@ function drawScore() {
   text(`Score: ${score}`, 20, 60);
 }
 
-function spreadMold() {
+function spreadMold(cur_mold) {
+  console.log(cur_mold)
     newMold = {
-        x: random(width),
-        y: random(height),
-        r: random(25, 50)
+        x: cur_mold.x + random(-80,80),
+        y: cur_mold.y + random(-80,80),
+        r: random(25, 50),
+        c: random(100,250)
     }
     moldSpots.push(newMold);
 }
+
+function growMold() {
+    newMold = {
+        x: random(width),
+        y: random(height),
+        r: random(25, 50),
+        c: random(100,250)
+    }
+    moldSpots.push(newMold);
+}
+
 
 function cleaning() {
     if (!mouseIsPressed) {
