@@ -25,6 +25,7 @@ function draw() {
     if (frameCount % 120 == 0) { //mold spreads every two seconds 
       spreadMold();
     }
+    cleaning();
     drawTimer();
 
 
@@ -46,4 +47,31 @@ function spreadMold() {
         r: random(15, 40)
     }
     moldSpots.push(newMold);
+}
+
+function cleaning() {
+  if (mouseIsPressed) {
+    for (let i = 0; i < moldSpots.length; i++) {
+      let current = moldSpots[i];
+      let d = dist(mouseX, mouseY, current.x, current.y); //calculate distance between mouse and mold center
+      if (d < current.r) { //mouse is over mold
+        if (heldMoldIndex !== i) { //set current mold being held 
+          heldMoldIndex = i;
+          holdStartTime = millis();
+        } else {
+          let heldTime = (millis() - holdStartTime) / 1000;
+          if (heldTime >= 1.5) { //remove mold after 1.5 seconds of holding
+            moldSpots.splice(i, 1);
+            score++;
+            heldMoldIndex = -1;
+            holdStartTime = null;
+          }
+        }
+        return; 
+      }
+    }
+  } else {//mouse released
+    heldMoldIndex = -1;
+    holdStartTime = null;
+  }
 }
