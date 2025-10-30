@@ -37,6 +37,9 @@ function draw() {
         }
       }
     }
+    if (frameCount % 300 == 0){
+      growMold();
+    }
     cleaning();
     drawTimer();
     drawScore();
