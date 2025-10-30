@@ -26,6 +26,7 @@ function draw() {
     fill(100, 200, 100);
       noStroke();
     for (let m of moldSpots) {
+        fill(m.c,200,100);
         circle(m.x, m.y, m.r * 2);
     }
     if (frameCount % 120 == 0) { //mold spreads every two seconds 
@@ -67,7 +68,8 @@ function spreadMold(cur_mold) {
     newMold = {
         x: cur_mold.x + random(-80,80),
         y: cur_mold.y + random(-80,80),
-        r: random(25, 50)
+        r: random(25, 50),
+        c: random(100,250)
     }
     moldSpots.push(newMold);
 }
@@ -76,7 +78,8 @@ function growMold() {
     newMold = {
         x: random(width),
         y: random(height),
-        r: random(25, 50)
+        r: random(25, 50),
+        c: random(100,250)
     }
     moldSpots.push(newMold);
 }
