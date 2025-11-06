@@ -8,6 +8,9 @@ let lastMouseX = 0;
 let lastMouseY = 0;
 let spread_chance = 8;
 
+let bubbles = [];
+var audio = new Audio('assets/scrub.wav')
+
 function setup() {
   createCanvas(800, 600);
   growMold();
@@ -37,6 +40,10 @@ function draw() {
           spreadMold(mold);
         }
       }
+    }
+    for (let b of bubbles) {  // bubbles when cleaning
+      fill(b.c, 255, 255);
+      circle(b.x, b.y, b.r * 2);
     }
     if (frameCount % 300 == 0){
       growMold();
@@ -84,6 +91,15 @@ function growMold() {
     moldSpots.push(newMold);
 }
 
+function newBubbles() {
+    newBubble = {
+      x: mouseX,
+      y: mouseY,
+      r: random(1, 10),
+      c: random(0, 204)
+    }
+    bubbles.push(newBubble)
+}
 
 function cleaning() {
     if (!mouseIsPressed) {
@@ -107,10 +123,13 @@ function cleaning() {
 
             } else {
                 let movement = dist(mouseX, mouseY, lastMouseX, lastMouseY);
+                newBubbles()
+                audio.play();
                 if (movement > 1) {
                     heldTime += deltaTime / 1000;
                     if (heldTime >= 1) { //remove mold after 1 second of holding
                         moldSpots.splice(i, 1);
+                        bubbles = []; // clear bubbles
                         score++;
                         heldMoldIndex = -1;
                         lastMouseX = 0;
