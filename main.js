@@ -15,6 +15,10 @@ function setup() {
 
 function draw() {
   background(220);
+  if (gameOver) {
+    drawGameOver();
+    noLoop(); 
+  }
 
   if (!gameOver) {
     if (frameCount % 60 == 0 && gameTimer > 0) {
@@ -29,7 +33,7 @@ function draw() {
         fill(m.c,200,100);
         circle(m.x, m.y, m.r * 2);
     }
-    if (frameCount % 120 == 0) { //mold spreads every two seconds 
+    if (frameCount % 100 == 0) { //mold spreads every two seconds 
       for (let mold of moldSpots){
         let i = floor(random(0,spread_chance));
         if(i == 0){
@@ -46,9 +50,17 @@ function draw() {
     drawScore();
     //console.log(moldSpots);
 
-  } else {
-    //done
-  }
+  } 
+}
+
+function drawGameOver() {
+  background(220); 
+  textAlign(CENTER, CENTER);
+  fill(0);
+  textSize(60);
+  text("GAME OVER", width / 2, height / 2 - 40);
+  textSize(40);
+  text(`Final Score: ${score}`, width / 2, height / 2 + 40);
 }
 
 function drawTimer() {
@@ -64,7 +76,6 @@ function drawScore() {
 }
 
 function spreadMold(cur_mold) {
-  console.log(cur_mold)
     newMold = {
         x: cur_mold.x + random(-80,80),
         y: cur_mold.y + random(-80,80),
