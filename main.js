@@ -11,6 +11,9 @@ let spread_chance = 8;
 function setup() {
   createCanvas(800, 600);
   growMold();
+  growMold();
+  growMold();
+  growMold();
 }
 
 function draw() {
@@ -30,6 +33,7 @@ function draw() {
     fill(100, 200, 100);
       noStroke();
     for (let m of moldSpots) {
+        m.r += 0.05
         fill(m.c,200,100);
         circle(m.x, m.y, m.r * 2);
     }
